@@ -37,7 +37,7 @@ def register(request):
         else:
             print(form.errors)
     else:
-        form = UserRegisterForm
+        form = UserRegisterForm()
     context = {'form': form,
                'title': 'GeekShop - Регистрация',
                'container_class': 'col-lg-7'
