@@ -1,4 +1,5 @@
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm, UserChangeForm
+from django import forms
 
 from authapp.models import User
 
@@ -33,6 +34,7 @@ class UserRegisterForm(UserCreationForm):
 
 
 class UserProfileForm(UserChangeForm):
+    avatar = forms.ImageField(widget=forms.FileInput())
 
     class Meta:
         model = User
@@ -44,3 +46,4 @@ class UserProfileForm(UserChangeForm):
         self.fields['email'].widget.attrs['readonly'] = True
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control py4'
+        self.fields['avatar'].widget.attrs['class'] = 'custom-file-input'
