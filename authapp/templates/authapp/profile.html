@@ -1,5 +1,5 @@
 {% extends 'mainapp/base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block css %}
     <link href="{% static 'css/profile.css' %}" rel="stylesheet">
@@ -50,6 +50,16 @@
                     <div class="col-lg-6">
                         <label class="small mb-1" for="{{ form.email.id_for_label }}">Адрес электронной почты</label>
                         {{ form.email }}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-lg-6">
+                        <label class="small mb-1" for="{{ profile_form.gender.id_for_label }}">Пол</label>
+                        {{ profile_form.gender }}
+                    </div>
+                    <div class="col-lg-6">
+                        <label class="small mb-1" for="{{ profile_form.about_me.id_for_label }}">О себе</label>
+                        {{ profile_form.about_me }}
                     </div>
                 </div>
                 <div class="form-row">
