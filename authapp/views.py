@@ -1,14 +1,17 @@
 from django.conf import settings
 from django.core.mail import send_mail
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, get_object_or_404
 from django.contrib import auth
-from django.urls import reverse
+from django.urls import reverse, reverse_lazy
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.views.generic import UpdateView
 
 from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
 from basketapp.models import Basket
-from .models import User
+from .models import User, UserProfile
+from django.db import transaction
+from authapp.forms import UserProfileEditForm
 
 
 def send_verify_mail(user):
@@ -98,3 +101,42 @@ def verify(request, email, activation_key):
     except Exception as e:
         print(f'error activation user: {e.args}')
         return HttpResponseRedirect(reverse('main'))
+
+
+@transaction.atomic
+def profile(request):
+    title = 'редактирование'
+
+    if request.method == 'POST':
+        edit_form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
+        profile_form = UserProfileEditForm(data=request.POST, files=request.FILES, instance=request.user.userprofile)
+
+        if edit_form.is_valid() and profile_form.is_valid():
+            edit_form.save()
+            return HttpResponseRedirect(reverse('auth:profile'))
+    else:
+        edit_form = UserProfileForm(data=request.POST, files=request.FILES, instance=request.user)
+        profile_form = UserProfileEditForm(data=request.POST, files=request.FILES,
+                                               instance=request.user.userprofile)
+
+    context = {
+        'title': title,
+        'form': edit_form,
+        'profile_form': profile_form,
+    }
+    return render(request, 'authapp/profile.html', context)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
