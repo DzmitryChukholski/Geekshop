@@ -26,3 +26,22 @@ class Product(models.Model):
 
     def get_item(self):
         return Product.objects.filter(is_active=True).order_by('category', 'name')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
